@@ -37,8 +37,8 @@ namespace isong.UIAnime
     public class UIAnimeAttribute
     {
         /// <summary>
-        /// use anime
-        /// </summary>
+        /// whether to use animation
+        /// </summary> 
         public bool isUseAnime = false;
         /// <summary>
         /// sue Curve or use ease
@@ -125,6 +125,9 @@ namespace isong.UIAnime
             }
         }
 
+        /// <summary>
+        /// target of recttrans
+        /// </summary>
         [SerializeField] private RectTransform rectTrans;
         public RectTransform targetRectTrans
         {
@@ -148,7 +151,14 @@ namespace isong.UIAnime
         //=====================      Show UI Anime        =====================
         #region 
         private Sequence showSqueue;
+
+        /// <summary>
+        /// events processed before show
+        /// </summary>
         public Action OnShowBefore;
+        /// <summary>
+        /// events processed after show
+        /// </summary>
         public Action OnShowAfter;
         /// <summary>
         /// play show  anime
@@ -217,7 +227,13 @@ namespace isong.UIAnime
         #region
 
         private Sequence hideSqueue;
+        /// <summary>
+        /// events processed before hide
+        /// </summary>
         public Action OnHideBefore;
+        /// <summary>
+        /// events processed after hide
+        /// </summary>
         public Action OnHideAfter;
         /// <summary>
         /// play hide  anime
