@@ -1,10 +1,18 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: sueRimn
+ * @Date: 2021-07-30 14:06:50
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2021-07-30 14:35:34
+-->
 # Unity-UIAnimeTool
 A simple unity3d ui animation tool
 
 ## Screenshot
 ![Screenshot](https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/img.png) 
 
-## How to use
+## All Attributes
 
 ```c#
         /// <summary>
@@ -32,6 +40,7 @@ A simple unity3d ui animation tool
         public Action OnHideBefore;//events processed before hide
         public Action OnHideAfter;//events processed after hide
 
-
-
 ```
+
+## How to use
+For details, please see the ***DEMO*** scene.
