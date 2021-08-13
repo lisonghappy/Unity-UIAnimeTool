@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿ using UnityEngine;
 using DG.Tweening;
 using System;
 
@@ -82,7 +82,7 @@ namespace isong.UIAnime
         [SerializeField] private bool isEnableAnime = false;
         [Range(0f, 10f)] public float duration = 0.1f;
 
-        //public bool isShowMask = true;
+        public bool isEnableMask = false;
 
 
 
@@ -91,19 +91,40 @@ namespace isong.UIAnime
         public UIStateAnimeAttribute rotateStateVal = new UIStateAnimeAttribute();
         public UIStateAnimeAttribute scaleStateVal = new UIStateAnimeAttribute() { stayValue = Vector3.one };
         public UIStateAnimeAttribute alphaStateVal = new UIStateAnimeAttribute() { stayValue = Vector3.one };
+        public UIStateAnimeAttribute maskStateVal = new UIStateAnimeAttribute() { stayValue = Vector3.one };
 
         //frome 
         public UIAnimeAttribute posFromAnimeAttribute;
         public UIAnimeAttribute rotateFromAnimeAttribute;
         public UIAnimeAttribute scaleFromAnimeAttribute;
         public UIAnimeAttribute alphaFromAnimeAttribute;
+        public UIAnimeAttribute maskFromAnimeAttribute;
 
         //to
         public UIAnimeAttribute posToAnimeAttribute;
         public UIAnimeAttribute rotateToAnimeAttribute;
         public UIAnimeAttribute scaleToAnimeAttribute;
         public UIAnimeAttribute alphaToAnimeAttribute;
+        public UIAnimeAttribute maskToAnimeAttribute;
 
+        /// <summary>
+        /// target of recttrans
+        /// </summary>
+        [SerializeField] private RectTransform rectTrans;
+        public RectTransform targetRectTrans
+        {
+            get
+            {
+                if (rectTrans == null)
+                    rectTrans = transform as RectTransform;
+                return rectTrans;
+            }
+            set
+            {
+                rectTrans = value;
+            }
+
+        }
 
         private CanvasGroup _canvasGroup;
         protected CanvasGroup canvasGroup
@@ -125,24 +146,9 @@ namespace isong.UIAnime
             }
         }
 
-        /// <summary>
-        /// target of recttrans
-        /// </summary>
-        [SerializeField] private RectTransform rectTrans;
-        public RectTransform targetRectTrans
-        {
-            get
-            {
-                if (rectTrans == null)
-                    rectTrans = transform as RectTransform;
-                return rectTrans;
-            }
-            set
-            {
-                rectTrans = value;
-            }
 
-        }
+        [SerializeField] private CanvasGroup maskCanvasGroup;
+        [SerializeField] private bool isMaskblocksRaycasts = true;
 
         #endregion
 
@@ -179,6 +185,13 @@ namespace isong.UIAnime
             if (OnShowBefore != null)
                 OnShowBefore();
 
+            #region // --------------      mask         --------------------
+            var tweenMask = DoMaskAnime(true);
+            if (tweenMask != null)
+                showSqueue.Join(tweenMask);
+            #endregion
+
+
             #region // --------------      pos         --------------------
             var tweenPos = DoTransformAnime(EAnimeType.pos, true);
             if (tweenPos != null)
@@ -199,15 +212,14 @@ namespace isong.UIAnime
                 showSqueue.Join(tweenScale);
             #endregion
 
-
-
+             
             #region // --------------      alpha         --------------------
             var tweenAlpha = DoAlphaAnime(true);
             if (tweenAlpha != null)
                 showSqueue.Join(tweenAlpha);
             #endregion
 
-            //finished
+            //show finished
             showSqueue.OnComplete(() => {
                 if (canvasGroup != null)
                     canvasGroup.blocksRaycasts = true;
@@ -261,6 +273,14 @@ namespace isong.UIAnime
             hideSqueue = DOTween.Sequence();
 
 
+            #region // --------------      mask         --------------------
+ 
+            var tweenMask = DoMaskAnime(false);
+            if (tweenMask != null)
+                showSqueue.Join(tweenMask);
+            #endregion
+
+
             #region  //--------------      pos         --------------------
             var tweenPos = DoTransformAnime(EAnimeType.pos, false);
             if (tweenPos != null)
@@ -274,24 +294,24 @@ namespace isong.UIAnime
                 hideSqueue.Join(tweenRotate);
             #endregion
 
-
-
+             
             #region  //--------------      scale         --------------------
             var tweenScale = DoTransformAnime(EAnimeType.scale, false);
             if (tweenScale != null)
                 hideSqueue.Join(tweenScale);
             #endregion
 
-
-
+             
             #region    //--------------      alpha         --------------------
             var tweenAlpha = DoAlphaAnime(false);
             if (tweenAlpha != null)
                 hideSqueue.Join(tweenAlpha);
             #endregion
 
-            //finished
+            //hide finished
             hideSqueue.OnComplete(() => {
+                if (tweenMask != null )
+                    maskCanvasGroup.blocksRaycasts= false; 
                 if (tweenPos == null)
                     targetRectTrans.localPosition = posStateVal.toValue;
                 if (tweenRotate == null)
@@ -323,6 +343,59 @@ namespace isong.UIAnime
             scale,
         }
 
+        #region Do Mask Anime
+
+        private Tween DoMaskAnime(bool isEnter = true)
+        {
+            Tweener tweener = null;
+            
+            if (!isEnableMask || maskCanvasGroup == null) return tweener;
+             
+            maskCanvasGroup.blocksRaycasts = isMaskblocksRaycasts;
+
+            //get value
+            float val = 0f;
+            if (isEnter)
+            {
+                maskCanvasGroup.alpha = maskStateVal.fromValue.x;
+                val = maskStateVal.stayValue.x;
+            }
+            else
+                val = maskStateVal.toValue.x;
+            //get attribute
+            UIAnimeAttribute animeAttribute = null;
+
+            if (isEnter)
+                animeAttribute = maskFromAnimeAttribute;
+            else
+                animeAttribute = maskToAnimeAttribute;
+
+            if (isEnableAnime && maskStateVal.isEnableAnime && animeAttribute.isUseAnime)
+            {
+
+                if (!isEnter && animeAttribute.isUseBackwards)
+                    animeAttribute = maskFromAnimeAttribute;
+
+                //get duration
+                var tempDurtion = 0f;
+                if (animeAttribute.isUseLocalDuration)
+                    tempDurtion = animeAttribute.duration;
+                else
+                    tempDurtion = duration;
+
+                if (animeAttribute.isCurve)
+                    tweener = maskCanvasGroup.DOFade(val, tempDurtion).SetEase(animeAttribute.curve);
+                else
+                    tweener = maskCanvasGroup.DOFade(val, tempDurtion).SetEase(animeAttribute.ease);
+            }
+            else
+            {
+                maskCanvasGroup.alpha = val;
+            }
+            return tweener;
+        }
+
+        #endregion
 
         #region Do Transform Anime
         /// <summary>

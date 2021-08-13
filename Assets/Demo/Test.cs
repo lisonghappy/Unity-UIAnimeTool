@@ -17,11 +17,11 @@ public class Test : MonoBehaviour
         panelTrans = transform.Find("Panel");
         uiAnime = panelTrans.GetComponent<UIAnimeTool>();
         openBtn = transform.Find("ButtonOpen").GetComponent<Button>();
-        closeBtn = panelTrans.Find("ButtonClose").GetComponent<Button>();
+        closeBtn = panelTrans.Find("Content/ButtonClose").GetComponent<Button>();
 
-
-        //set anime target
-        uiAnime.targetRectTrans = panelTrans as RectTransform;
+        //var contentRectTrans = transform.Find("Panel/Content") as RectTransform;
+        ////set anime target
+        //uiAnime.targetRectTrans = contentRectTrans;
         //anime show before action
         uiAnime.OnShowBefore += () => { if (!panelTrans.gameObject.activeSelf) panelTrans.gameObject.SetActive(true); };
         //anime show after action

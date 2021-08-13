@@ -11,7 +11,7 @@ namespace isong.UIAnime
     public class UIAnimeToolInspectorEditor : Editor
     {
 
-        private string Version = "0.0.1";
+        private string Version = "0.0.2";
 
         private Texture2D icon;
         private GUIStyle toolbarStyle;
@@ -23,7 +23,8 @@ namespace isong.UIAnime
             "<color=#BF1200>Position</color>",
             "<color=#21BE00>Rotation</color>",
             "<color=#0038BE>Scale</color>",
-            "<color=#E5CA00>Alpha</color>"
+            "<color=#E5CA00>Alpha</color>",
+            "Mask"
         };
         private List<string> animeTypeToolbarStrTemp = new List<string>(animeTypeToolbarStr);
 
@@ -35,8 +36,11 @@ namespace isong.UIAnime
 
         private SerializedProperty isEnableAnime;
         private SerializedProperty duration;
-        //private SerializedProperty isShowMask;
 
+        private SerializedProperty isEnableMask;
+        private SerializedProperty maskCanvasGroup;
+        private SerializedProperty isMaskblocksRaycasts;
+        
 
 
 
@@ -46,18 +50,22 @@ namespace isong.UIAnime
         private SerializedProperty scaleStateVal;
         private SerializedProperty rotateStateVal;
 
+        //mask
+        private SerializedProperty maskStateVal;
 
         //enter prop
-        private SerializedProperty alphaFromAnimeAttribute;
         private SerializedProperty posFromAnimeAttribute;
         private SerializedProperty scaleFromAnimeAttribute;
         private SerializedProperty rotateFromAnimeAttribute;
+        private SerializedProperty alphaFromAnimeAttribute;
+        private SerializedProperty maskFromAnimeAttribute;
 
         //exit prop
-        private SerializedProperty alphaToAnimeAttribute;
         private SerializedProperty posToAnimeAttribute;
         private SerializedProperty scaleToAnimeAttribute;
         private SerializedProperty rotateToAnimeAttribute;
+        private SerializedProperty alphaToAnimeAttribute;
+        private SerializedProperty maskToAnimeAttribute;
 
 
         private void OnEnable()
@@ -70,44 +78,36 @@ namespace isong.UIAnime
 
             isEnableAnime = serializedObject.FindProperty("isEnableAnime");
             duration = serializedObject.FindProperty("duration");
-            //isShowMask = serializedObject.FindProperty("isShowMask");
+            isEnableMask = serializedObject.FindProperty("isEnableMask");
+            maskCanvasGroup = serializedObject.FindProperty("maskCanvasGroup");
+            isMaskblocksRaycasts = serializedObject.FindProperty("isMaskblocksRaycasts");
 
 
             posStateVal = serializedObject.FindProperty("posStateVal");
             rotateStateVal = serializedObject.FindProperty("rotateStateVal");
             scaleStateVal = serializedObject.FindProperty("scaleStateVal");
             alphaStateVal = serializedObject.FindProperty("alphaStateVal");
+            maskStateVal = serializedObject.FindProperty("maskStateVal");
 
 
             posFromAnimeAttribute = serializedObject.FindProperty("posFromAnimeAttribute");
             rotateFromAnimeAttribute = serializedObject.FindProperty("rotateFromAnimeAttribute");
             scaleFromAnimeAttribute = serializedObject.FindProperty("scaleFromAnimeAttribute");
             alphaFromAnimeAttribute = serializedObject.FindProperty("alphaFromAnimeAttribute");
-
+            maskFromAnimeAttribute = serializedObject.FindProperty("maskFromAnimeAttribute");
 
             posToAnimeAttribute = serializedObject.FindProperty("posToAnimeAttribute");
             rotateToAnimeAttribute = serializedObject.FindProperty("rotateToAnimeAttribute");
             scaleToAnimeAttribute = serializedObject.FindProperty("scaleToAnimeAttribute");
             alphaToAnimeAttribute = serializedObject.FindProperty("alphaToAnimeAttribute");
+            maskToAnimeAttribute = serializedObject.FindProperty("maskToAnimeAttribute");
 
+            isEnableMaskVal = isEnableMask.boolValue;
+            ResetToolbarStrValue();
 
-
-            for (int i = 0; i < animeTypeToolbarStr.Length; i++)
-            {
-                var isState = false;
-                switch (i)
-                {
-                    case 0: isState = ISEnableAnime(posStateVal); break;
-                    case 1: isState = ISEnableAnime(rotateStateVal); break;
-                    case 2: isState = ISEnableAnime(scaleStateVal); break;
-                    case 3: isState = ISEnableAnime(alphaStateVal); break;
-                }
-                animeTypeToolbarStrTemp[i] = SetToolBarText(isState, i);
-
-            }
         }
 
-
+        private bool isEnableMaskVal = false;
         private GUIStyle labelStyle;
         private GUIStyle linkBtnStyle;
         public override void OnInspectorGUI()
@@ -132,15 +132,30 @@ namespace isong.UIAnime
             EditorGUILayout.PropertyField(targetRectTrans, new GUIContent("Target RectTrans", "When targetRectTrans is null, use the current object as the value of targetRectTrans"));
             Space(10);
             EditorGUILayout.PropertyField(isEnableAnime, new GUIContent("Enable Animation", "Whether to enable animation"));
-            Space(10);
-            //EditorGUILayout.PropertyField(isShowMask);
             EditorGUILayout.EndVertical();
+            Space(10);
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            EditorGUILayout.PropertyField(isEnableMask); 
+            Space(5);
+            if (isEnableMask.boolValue) { 
+                EditorGUILayout.PropertyField(maskCanvasGroup);
+                EditorGUILayout.PropertyField(isMaskblocksRaycasts);
+            }
+            EditorGUILayout.EndVertical();
+                
 
             Space(10);
+
+            if (isEnableMaskVal != isEnableMask.boolValue) { 
+                ResetToolbarStrValue();
+                isEnableMaskVal = isEnableMask.boolValue;
+                if (isSelectedAnimeType == 4)
+                    isSelectedAnimeType = 0;
+            }
+
 
 
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-
 
             toolbarStyle = new GUIStyle("AppToolbarButtonMid") { richText = true, fixedHeight = 30f, stretchWidth = true, fontSize = 15 };
             isSelectedAnimeType = GUILayout.Toolbar(isSelectedAnimeType, animeTypeToolbarStrTemp.ToArray(), toolbarStyle);
@@ -151,6 +166,7 @@ namespace isong.UIAnime
                 case 1: DrawUIAnime(GetEnableAnimeSP(rotateStateVal), rotateStateVal, rotateFromAnimeAttribute, rotateToAnimeAttribute, Color.green, isSelectedAnimeType); break;
                 case 2: DrawUIAnime(GetEnableAnimeSP(scaleStateVal), scaleStateVal, scaleFromAnimeAttribute, scaleToAnimeAttribute, Color.blue, isSelectedAnimeType); break;
                 case 3: DrawUIAnime(GetEnableAnimeSP(alphaStateVal), alphaStateVal, alphaFromAnimeAttribute, alphaToAnimeAttribute, Color.yellow, isSelectedAnimeType); break;
+                case 4: DrawUIAnime(GetEnableAnimeSP(maskStateVal), maskStateVal, maskFromAnimeAttribute, maskToAnimeAttribute, Color.white, isSelectedAnimeType); break;
             }
 
             EditorGUILayout.EndVertical();
@@ -160,7 +176,26 @@ namespace isong.UIAnime
         }
 
 
+        private void ResetToolbarStrValue() {
 
+            animeTypeToolbarStrTemp = new List<string>();
+            for (int i = 0; i < animeTypeToolbarStr.Length; i++)
+            {
+                var isState = false;
+                switch (i)
+                {
+                    case 0: isState = ISEnableAnime(posStateVal); break;
+                    case 1: isState = ISEnableAnime(rotateStateVal); break;
+                    case 2: isState = ISEnableAnime(scaleStateVal); break;
+                    case 3: isState = ISEnableAnime(alphaStateVal); break;
+                    case 4: isState = ISEnableAnime(maskStateVal); break;
+                }
+
+                if (i != 4 || isEnableMask.boolValue) 
+                    animeTypeToolbarStrTemp.Add(SetToolBarText(isState, i));
+                
+            }
+        }
 
 
         /// <summary>
@@ -194,7 +229,8 @@ namespace isong.UIAnime
 
             GUI.backgroundColor = Color.white;
             Space(10);
-            var isDurationState = ISEnableAnime(posStateVal) || ISEnableAnime(rotateStateVal) || ISEnableAnime(scaleStateVal) || ISEnableAnime(alphaStateVal);
+            var isDurationState = ISEnableAnime(posStateVal) || ISEnableAnime(rotateStateVal) || ISEnableAnime(scaleStateVal) 
+                                                || ISEnableAnime(alphaStateVal) || ISEnableAnime(maskStateVal);
             EditorGUI.BeginDisabledGroup(!isDurationState);
             EditorGUILayout.PropertyField(duration);
             EditorGUI.EndDisabledGroup();
@@ -241,12 +277,12 @@ namespace isong.UIAnime
         {
             EditorGUILayout.LabelField("Normal", GUILayout.ExpandWidth(false));
 
-            var isAlpha = property == alphaStateVal;
+            var isSpecial = property == alphaStateVal || property == maskStateVal;
             var isScale = property == scaleStateVal;
             var fromValueStr = "fromValue";
             var stayValueStr = "stayValue";
             var toValueStr = "toValue";
-            if (isAlpha)
+            if (isSpecial)
             {
                 fromValueStr += ".x";
                 stayValueStr += ".x";
@@ -264,7 +300,7 @@ namespace isong.UIAnime
 
             if (GUILayout.Button("Reset", GUILayout.Height(64f)))
             {
-                if (isAlpha)
+                if (isSpecial)
                 {
                     property.FindPropertyRelative(fromValueStr).floatValue = 0f;
                     property.FindPropertyRelative(stayValueStr).floatValue = 1f;

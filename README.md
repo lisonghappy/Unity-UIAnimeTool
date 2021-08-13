@@ -1,16 +1,34 @@
 <!--
  * @Descripttion: 
  * @version: 
- * @Author: sueRimn
+ * @Author: risu
  * @Date: 2021-07-30 14:06:50
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-07-30 14:35:34
+ * @LastEditTime: 2021-08-13 16:37:23
 -->
 # Unity-UIAnimeTool
-A simple unity3d ui animation tool
+A simple unity3d ui animation tool.
+
+[github page](https://github.com/lisonghappy/Unity-UIAnimeTool)
+
+
+Demo anime show.
+<img src="https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/Img/demo_anime_show.gif" alt="Demo anime show" /> 
+
 
 ## Screenshot
-![Screenshot](https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/img.png) 
+![Screenshot](https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/Img/img.png) 
+
+![position anime prop](https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/Img/img-postion.png) 
+
+![scale prop](https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/Img/img-scale.png) 
+
+![rotate prop](https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/Img/img-rotate.png) 
+
+![panel alpha prop](https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/Img/img-panel_alpha.png) 
+
+![panel mask prop](https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/Img/img-panel_mask.png) 
+
 
 ## All Attributes
 

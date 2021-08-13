@@ -1,0 +1,1 @@
+start D:\Programs\Unity\2019.4.18f1\Editor\Unity.exe -projectpath "E:\GitHub\Unity-UIAnimeTool" -buildTarget "android" exit
