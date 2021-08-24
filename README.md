@@ -12,20 +12,33 @@ A simple unity3d ui animation tool.
 [github page](https://github.com/lisonghappy/Unity-UIAnimeTool)
 
 
-Demo anime show.
 <img src="https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/Img/demo_anime_show.gif" alt="Demo anime show" /> 
 
 
+
 ## Screenshot
+
+tool panel.
+
 ![Screenshot](https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/Img/img.png) 
 
-![position anime prop](https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/Img/img-postion.png) 
+position prop:
+
+![position anime prop](https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/Img/img-position.png) 
+
+scele prop:
 
 ![scale prop](https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/Img/img-scale.png) 
 
+rotate prop:
+
 ![rotate prop](https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/Img/img-rotate.png) 
 
+panel alpaha prop:
+
 ![panel alpha prop](https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/Img/img-panel_alpha.png) 
+
+mask prop:
 
 ![panel mask prop](https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/Img/img-panel_mask.png) 
 
@@ -62,3 +75,7 @@ Demo anime show.
 
 ## How to use
 For details, please see the ***DEMO*** scene.
+
+
+## Dependencies
+[DoTween](https://github.com/Demigiant/dotween)
