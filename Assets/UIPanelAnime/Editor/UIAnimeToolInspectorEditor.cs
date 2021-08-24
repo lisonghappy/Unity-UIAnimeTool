@@ -125,8 +125,8 @@ namespace isong.UIAnime
             Space(30);
             #endregion
 
-
-
+            
+            EditorGUILayout.LabelField("State");
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             Space(10);
             EditorGUILayout.PropertyField(targetRectTrans, new GUIContent("Target RectTrans", "When targetRectTrans is null, use the current object as the value of targetRectTrans"));
@@ -134,12 +134,14 @@ namespace isong.UIAnime
             EditorGUILayout.PropertyField(isEnableAnime, new GUIContent("Enable Animation", "Whether to enable animation"));
             EditorGUILayout.EndVertical();
             Space(10);
+
+            EditorGUILayout.LabelField("Mask");
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            EditorGUILayout.PropertyField(isEnableMask); 
+            EditorGUILayout.PropertyField(isEnableMask, new GUIContent("Enable Mask", "Whether to enable animation mask"));
             Space(5);
             if (isEnableMask.boolValue) { 
                 EditorGUILayout.PropertyField(maskCanvasGroup);
-                EditorGUILayout.PropertyField(isMaskblocksRaycasts);
+                EditorGUILayout.PropertyField(isMaskblocksRaycasts, new GUIContent("Mask BlocksRaycasts", "Whether to enable animation mask's BlocksRaycasts"));
             }
             EditorGUILayout.EndVertical();
                 
@@ -247,14 +249,14 @@ namespace isong.UIAnime
 
             //draw enter property
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            DrawUIAnimeAttribute(enterAnimeAttribute, true);
+            DrawUIAnimeAttribute(enterAnimeAttribute, exitAnimeAttribute, true);
             EditorGUILayout.EndVertical();
 
             Space(5f);
 
             //draw exit property
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            DrawUIAnimeAttribute(exitAnimeAttribute, false);
+            DrawUIAnimeAttribute(enterAnimeAttribute, exitAnimeAttribute, false);
             EditorGUILayout.EndVertical();
 
             EditorGUI.EndDisabledGroup();
@@ -324,17 +326,19 @@ namespace isong.UIAnime
         /// Draw ui  anime attribute
         /// </summary>
         /// <param name="animeProperty"></param>
-        /// <param name="isFrom"></param>
+        /// <param name="isFromProp"></param>
         /// <param name="isVectorVal"></param>
-        private void DrawUIAnimeAttribute(SerializedProperty animeProperty, bool isFrom)
+        private void DrawUIAnimeAttribute(SerializedProperty enterAnimeProperty, SerializedProperty exitAnimeProperty, bool isFromProp)
         {
+
+            var animeProperty = isFromProp? enterAnimeProperty : exitAnimeProperty;
             if (animeProperty == null) return;
 
 
             Space(5);
             var isUseAnime = animeProperty.FindPropertyRelative("isUseAnime");
             var useAnimeDisplayName = "";
-            if (isFrom) 
+            if (isFromProp) 
                 useAnimeDisplayName  = "From"; 
             else 
                 useAnimeDisplayName = "To";
@@ -343,11 +347,17 @@ namespace isong.UIAnime
             {
                 var isShow = true;
                 Space(5);
-                if (!isFrom)
-                {
-                    var isUseBackwards = animeProperty.FindPropertyRelative("isUseBackwards");
-                    EditorGUILayout.PropertyField(isUseBackwards, new GUIContent("Use Backward"));
-                    isShow = !isUseBackwards.boolValue;
+                if (!isFromProp)
+                { 
+                    if (!enterAnimeProperty.FindPropertyRelative("isUseAnime").boolValue)
+                    {
+                        isShow = true;
+                    }
+                    else {
+                        var isUseBackwards = animeProperty.FindPropertyRelative("isUseBackwards");
+                        EditorGUILayout.PropertyField(isUseBackwards, new GUIContent("Use Backward"));
+                        isShow = !isUseBackwards.boolValue;
+                    }
                 }
 
                 if (isShow)

@@ -1095,21 +1095,21 @@ MonoBehaviour:
   isEnableMask: 1
   posStateVal:
     isEnableAnime: 1
-    fromValue: {x: -1000, y: 0, z: 0}
+    fromValue: {x: -3000, y: 0, z: 0}
     stayValue: {x: 0, y: 0, z: 0}
-    toValue: {x: 1000, y: 0, z: 0}
+    toValue: {x: 3000, y: 0, z: 0}
   rotateStateVal:
     isEnableAnime: 0
     fromValue: {x: 0, y: 0, z: 0}
     stayValue: {x: 0, y: 0, z: 0}
     toValue: {x: 0, y: 0, z: 0}
   scaleStateVal:
-    isEnableAnime: 0
+    isEnableAnime: 1
     fromValue: {x: 0, y: 0, z: 0}
     stayValue: {x: 1, y: 1, z: 1}
     toValue: {x: 0, y: 0, z: 0}
   alphaStateVal:
-    isEnableAnime: 1
+    isEnableAnime: 0
     fromValue: {x: 0, y: 0, z: 0}
     stayValue: {x: 1, y: 1, z: 1}
     toValue: {x: 0, y: 0, z: 0}
@@ -1151,8 +1151,8 @@ MonoBehaviour:
     duration: 0.5
   rotateFromAnimeAttribute:
     isUseAnime: 0
-    isCurve: 0
-    isUseLocalDuration: 0
+    isCurve: 1
+    isUseLocalDuration: 1
     isUseBackwards: 1
     curve:
       serializedVersion: 2
@@ -1183,7 +1183,7 @@ MonoBehaviour:
   scaleFromAnimeAttribute:
     isUseAnime: 1
     isCurve: 0
-    isUseLocalDuration: 0
+    isUseLocalDuration: 1
     isUseBackwards: 1
     curve:
       serializedVersion: 2
@@ -1210,7 +1210,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     ease: 1
-    duration: 0.1
+    duration: 0.5
   alphaFromAnimeAttribute:
     isUseAnime: 1
     isCurve: 0
@@ -1277,7 +1277,7 @@ MonoBehaviour:
     isUseAnime: 1
     isCurve: 0
     isUseLocalDuration: 1
-    isUseBackwards: 0
+    isUseBackwards: 1
     curve:
       serializedVersion: 2
       m_Curve:
@@ -1305,7 +1305,7 @@ MonoBehaviour:
     ease: 26
     duration: 0.25
   rotateToAnimeAttribute:
-    isUseAnime: 0
+    isUseAnime: 1
     isCurve: 0
     isUseLocalDuration: 0
     isUseBackwards: 1
@@ -1401,7 +1401,7 @@ MonoBehaviour:
     isUseAnime: 1
     isCurve: 0
     isUseLocalDuration: 1
-    isUseBackwards: 0
+    isUseBackwards: 1
     curve:
       serializedVersion: 2
       m_Curve:
@@ -1430,4 +1430,4 @@ MonoBehaviour:
     duration: 0.25
   rectTrans: {fileID: 774282021}
   maskCanvasGroup: {fileID: 196575957}
-  isMaskblocksRaycasts: 0
+  isMaskblocksRaycasts: 1

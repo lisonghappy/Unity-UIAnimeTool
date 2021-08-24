@@ -373,7 +373,7 @@ namespace isong.UIAnime
             if (isEnableAnime && maskStateVal.isEnableAnime && animeAttribute.isUseAnime)
             {
 
-                if (!isEnter && animeAttribute.isUseBackwards)
+                if (!isEnter && maskFromAnimeAttribute.isUseAnime &&animeAttribute.isUseBackwards)
                     animeAttribute = maskFromAnimeAttribute;
 
                 //get duration
@@ -473,7 +473,7 @@ namespace isong.UIAnime
             if (isAnime && animeAttribute.isUseAnime)
             {
                 //if is exit and ,and  use fromVal
-                if (!isEnter && animeAttribute.isUseBackwards)
+                if (!isEnter && animeAttributeTemp.isUseAnime && animeAttribute.isUseBackwards)
                     animeAttribute = animeAttributeTemp;
 
                 //get duration
@@ -551,7 +551,7 @@ namespace isong.UIAnime
             if (isEnableAnime && alphaStateVal.isEnableAnime && animeAttribute.isUseAnime)
             {
 
-                if (!isEnter && animeAttribute.isUseBackwards)
+                if (!isEnter && alphaFromAnimeAttribute.isUseAnime && animeAttribute.isUseBackwards)
                     animeAttribute = alphaFromAnimeAttribute;
 
                 //get duration
