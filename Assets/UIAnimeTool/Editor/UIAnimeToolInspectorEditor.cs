@@ -67,6 +67,11 @@ namespace isong.UIAnime
         private SerializedProperty alphaToAnimeAttribute;
         private SerializedProperty maskToAnimeAttribute;
 
+        //color
+        private Color posStateAnimeColor = Color.red * 0.75f;
+        private Color scaleStateAnimeColor = Color.blue * 0.75f;
+        private Color rotateStateAnimeColor = Color.green * 0.75f;
+        private Color alphaStateAnimeColor = Color.yellow * 0.75f;
 
         private void OnEnable()
         {
@@ -159,15 +164,15 @@ namespace isong.UIAnime
 
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
 
-            toolbarStyle = new GUIStyle("AppToolbarButtonMid") { richText = true, fixedHeight = 30f, stretchWidth = true, fontSize = 15 };
+            toolbarStyle = new GUIStyle("LargeButtonMid") { richText = true, fixedHeight = 30f, stretchWidth = true, fontSize = 15 };
             isSelectedAnimeType = GUILayout.Toolbar(isSelectedAnimeType, animeTypeToolbarStrTemp.ToArray(), toolbarStyle);
 
             switch (isSelectedAnimeType)
             {
-                case 0: DrawUIAnime(GetEnableAnimeSP(posStateVal), posStateVal, posFromAnimeAttribute, posToAnimeAttribute, Color.red, isSelectedAnimeType); break;
-                case 1: DrawUIAnime(GetEnableAnimeSP(rotateStateVal), rotateStateVal, rotateFromAnimeAttribute, rotateToAnimeAttribute, Color.green, isSelectedAnimeType); break;
-                case 2: DrawUIAnime(GetEnableAnimeSP(scaleStateVal), scaleStateVal, scaleFromAnimeAttribute, scaleToAnimeAttribute, Color.blue, isSelectedAnimeType); break;
-                case 3: DrawUIAnime(GetEnableAnimeSP(alphaStateVal), alphaStateVal, alphaFromAnimeAttribute, alphaToAnimeAttribute, Color.yellow, isSelectedAnimeType); break;
+                case 0: DrawUIAnime(GetEnableAnimeSP(posStateVal), posStateVal, posFromAnimeAttribute, posToAnimeAttribute, posStateAnimeColor, isSelectedAnimeType); break;
+                case 1: DrawUIAnime(GetEnableAnimeSP(rotateStateVal), rotateStateVal, rotateFromAnimeAttribute, rotateToAnimeAttribute, rotateStateAnimeColor, isSelectedAnimeType); break;
+                case 2: DrawUIAnime(GetEnableAnimeSP(scaleStateVal), scaleStateVal, scaleFromAnimeAttribute, scaleToAnimeAttribute, scaleStateAnimeColor, isSelectedAnimeType); break;
+                case 3: DrawUIAnime(GetEnableAnimeSP(alphaStateVal), alphaStateVal, alphaFromAnimeAttribute, alphaToAnimeAttribute, alphaStateAnimeColor, isSelectedAnimeType); break;
                 case 4: DrawUIAnime(GetEnableAnimeSP(maskStateVal), maskStateVal, maskFromAnimeAttribute, maskToAnimeAttribute, Color.white, isSelectedAnimeType); break;
             }
 
@@ -439,11 +444,15 @@ namespace isong.UIAnime
         /// <param name="size"></param>
         private void Space(float size = 0f)
         {
+#if UNITY_2018_OR_NEWER
             EditorGUILayout.Space(size);
+#else
+            GUILayout.Space(size);
+#endif
         }
 
 
-        [MenuItem("CONTEXT/" + nameof(UIAnimeTool) + "/Open Soure Link")]
+        [MenuItem("CONTEXT/UIAnimeTool/Open Soure Link")]
         private static void OpenLink()
         {
 
