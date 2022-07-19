@@ -444,11 +444,7 @@ namespace isong.UIAnime
         /// <param name="size"></param>
         private void Space(float size = 0f)
         {
-#if UNITY_2018_OR_NEWER
-            EditorGUILayout.Space(size);
-#else
             GUILayout.Space(size);
-#endif
         }
 
 
