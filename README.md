@@ -12,8 +12,11 @@ A simple unity3d ui animation tool.
 [github page](https://github.com/lisonghappy/Unity-UIAnimeTool)
 
 
-<img src="https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/Img/demo_anime_show.gif" alt="Demo anime show" /> 
+<img src="https://github.com/lisonghappy/Unity-UIAnimeTool/blob/main/Img/demo_anime_show.gif" alt="Demo anime show" />
 
+
+#### Unity Version
+        2017.4.40
 
 
 ## Screenshot
