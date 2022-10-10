@@ -277,7 +277,7 @@ namespace isong.UIAnime
  
             var tweenMask = DoMaskAnime(false);
             if (tweenMask != null)
-                showSqueue.Join(tweenMask);
+                hideSqueue.Join(tweenMask);
             #endregion
 
 
